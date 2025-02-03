@@ -6,6 +6,7 @@ pipeline {
             steps {
                 git branch: 'main', url: 'https://github.com/Marypearl/example-voting-app.git'
             }
+        }
 
         stage('Build Services') {
             steps {
@@ -27,8 +28,8 @@ pipeline {
                     def healthy = false
                     
                     while (retryCount < maxRetries) {
-                        def redisHealth = sh(script: "docker inspect --format='{{.State.Health.Status}}' $(docker-compose ps -q redis)", returnStdout: true).trim()
-                        def dbHealth = sh(script: "docker inspect --format='{{.State.Health.Status}}' $(docker-compose ps -q db)", returnStdout: true).trim()
+                        def redisHealth = sh(script: "docker inspect --format='{{.State.Health.Status}}' \$(docker-compose ps -q redis)", returnStdout: true).trim()
+                        def dbHealth = sh(script: "docker inspect --format='{{.State.Health.Status}}' \$(docker-compose ps -q db)", returnStdout: true).trim()
                         
                         if (redisHealth == "healthy" && dbHealth == "healthy") {
                             echo "All services are healthy!"
