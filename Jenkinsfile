@@ -10,13 +10,14 @@ pipeline {
 
         stage('Build Services') {
             steps {
-                sh 'docker-compose -f docker-compose.yml build'
+                // Use the official Docker Compose image to invoke docker-compose commands
+                sh 'docker run --rm -v $(pwd):/workspace -w /workspace docker/compose:1.29.2 -f docker-compose.yml build'
             }
         }
 
         stage('Start Services') {
             steps {
-                sh 'docker-compose up -d'
+                sh 'docker run --rm -v $(pwd):/workspace -w /workspace docker/compose:1.29.2 -f docker-compose.yml up -d'
             }
         }
 
@@ -54,13 +55,13 @@ pipeline {
                 expression { params.RUN_SEED }
             }
             steps {
-                sh 'docker-compose --profile seed up -d'
+                sh 'docker run --rm -v $(pwd):/workspace -w /workspace docker/compose:1.29.2 -f docker-compose.yml --profile seed up -d'
             }
         }
 
         stage('Clean Up') {
             steps {
-                sh 'docker-compose down'
+                sh 'docker run --rm -v $(pwd):/workspace -w /workspace docker/compose:1.29.2 -f docker-compose.yml down'
             }
         }
     }
