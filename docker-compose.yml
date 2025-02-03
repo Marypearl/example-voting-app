@@ -11,13 +11,13 @@ services:
       redis:
         condition: service_healthy
     healthcheck: 
-      test: ["CMD", "curl", "-f", "http://localhost"]
+      test: ["CMD", "curl", "-f", "http://3.96.162.126"]
       interval: 15s
       timeout: 5s
       retries: 3
       start_period: 10s
     volumes:
-     - ./vote:/usr/local/app
+      - ./vote:/usr/local/app
     ports:
       - "8080:80"
     networks:
@@ -35,7 +35,7 @@ services:
       - ./result:/usr/local/app
     ports:
       - "8081:80"
-      - "127.0.0.1:9229:9229"
+      - "3.96.162.126:9229:9229"
     networks:
       - front-tier
       - back-tier
@@ -66,6 +66,7 @@ services:
     environment:
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "postgres"
+      POSTGRES_HOST: "3.96.162.126"
     volumes:
       - "db-data:/var/lib/postgresql/data"
       - "./healthchecks:/healthchecks"
